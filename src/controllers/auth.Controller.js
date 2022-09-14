@@ -9,7 +9,6 @@ async function signIn(req, res){
 
     try {
         await MONGO_SESSIONS({insert:{
-            userId,
             token,
         }})
         return res.status(200).send(token)
