@@ -1,4 +1,8 @@
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+
 import {authSignInSchema, authSignUpSchema} from '../Schemas/authSchemas.js'
+import {MONGO_SESSIONS, MONGO_USERS} from '../database/dataService.js'
 
 async function authSignUp (req, res, next){
     const {name, email, password,
@@ -22,6 +26,14 @@ async function authSignUp (req, res, next){
         return res.status(422).send(errors)
     }
 
+    try {
+        const alreadyExist = await MONGO_USERS({find:{email,}})
+        if(alreadyExist) return res.status(409).send({message:'Já existe uma conta nesse E-mail.'})
+    } catch (error) {
+        console.error(error)
+        return res.sendStatus(500)
+    }
+
     res.locals.user = {name, email, password, 
         address, state, country}
     next()
@@ -43,11 +55,39 @@ async function authSignIn (req, res, next){
         return res.status(422).send(errors)
     }
 
-    res.locals.user = {email, password}
+    try {
+        const emailIsValid = await MONGO_USERS ({find: {email,}})
+        const hashPassword = bcrypt.compareSync(password, emailIsValid.hashPassword)
+        if(!hashPassword) return res.status(401).send({message:"email ou senha errada."})
+        console.log(emailIsValid)
+        res.locals.user = {userId: emailIsValid._id}
+    } catch (error) {
+        console.error(error)
+        return res.sendStatus(500)
+    }
+    
+    next()
+}
+
+async function authPrivateRoutes(req, res, next){
+    const token = req.headers.authorization
+    if(!token) return res.send(400)
+    const secretKey = process.env.JWT_SECRET
+
+    try {
+        const tokenIsValid = await MONGO_SESSIONS({find:{token,}})
+        if(!tokenIsValid) return res.sendStatus(401)
+        const userID = jwt.verify(tokenIsValid.token , secretKey)
+        res.locals.user = userID
+    } catch (error) {
+        console.error(error)
+        return res.sendStatus(500)
+    }
     next()
 }
 
 export {
     authSignIn,
-    authSignUp
+    authSignUp,
+    authPrivateRoutes
 }
