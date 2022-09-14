@@ -41,8 +41,21 @@ async function MONGO_PRODUCTS({find, insert, remove}){
     }
 }
 
+async function MONGO_CART({find, insert, remove}){
+    if(find){
+        return await db.collection('cart').find(find).toArray();
+    }
+    if(insert){
+        return await db.collection('cart').insertOne(insert)
+    }
+    if(remove){
+        return await db.collection('cart').insertOne(remove)
+    }
+}
+
 export {
     MONGO_USERS,
     MONGO_SESSIONS,
-    MONGO_PRODUCTS
+    MONGO_PRODUCTS,
+    MONGO_CART
 }
