@@ -24,7 +24,7 @@ async function authSignUp (req, res, next){
         const errors = isValid.error.details.map(detail => detail.message)
         return res.status(422).send(errors)
     }
-
+    
     try {
         const alreadyExist = await MONGO_USERS({find:{email,}})
         if(alreadyExist) return res.status(409).send({message:'Já existe uma conta nesse E-mail.'})
