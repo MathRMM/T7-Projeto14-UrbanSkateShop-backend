@@ -29,7 +29,20 @@ async function MONGO_SESSIONS({find, insert, remove}){
     }
 } 
 
+async function MONGO_PRODUCTS({find, insert, remove}){
+    if(find){
+        return await db.collection('products').find(find).toArray();
+    }
+    if(insert){
+        return await db.collection('products').insertOne(insert)
+    }
+    if(remove){
+        return await db.collection('products').insertOne(remove)
+    }
+}
+
 export {
     MONGO_USERS,
-    MONGO_SESSIONS
+    MONGO_SESSIONS,
+    MONGO_PRODUCTS
 }
