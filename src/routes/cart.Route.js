@@ -4,7 +4,7 @@ import { authPrivateRoutes } from '../middleware/auth.Middleware.js'
 
 const routerCart = express.Router();
 
-routerCart.post('/carinho', /* authPrivateRoutes,  */addToCart);
-routerCart.get('/carinho', /* authPrivateRoutes, */ getCart);
+routerCart.post('/carinho', authPrivateRoutes, addToCart);
+routerCart.get('/carinho', authPrivateRoutes, getCart);
 
 export default routerCart;
