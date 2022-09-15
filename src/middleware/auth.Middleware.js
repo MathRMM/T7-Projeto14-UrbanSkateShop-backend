@@ -71,7 +71,7 @@ async function authSignIn (req, res, next){
 
 async function authPrivateRoutes(req, res, next){
     const token = req.headers.authorization
-    if(!token) return res.send(400)
+    if(!token) return res.sendStatus(400)
     const secretKey = process.env.JWT_SECRET
 
     try {
