@@ -79,8 +79,8 @@ async function authPrivateRoutes(req, res, next) {
     try {
         const tokenIsValid = await MONGO_SESSIONS({ find: { token, } })
         if (!tokenIsValid) return res.sendStatus(401)
-        const userID = jwt.verify(tokenIsValid.token, secretKey)
-        res.locals.user = userID
+        const userId = jwt.verify(tokenIsValid.token, secretKey)
+        res.locals.user = userId
     } catch (error) {
         console.error(error)
         return res.sendStatus(500)

@@ -1,11 +1,12 @@
 import express from 'express';
 import { addToCart, getCart }from '../controllers/cart.controller.js';
-import { authPrivateRoutes } from '../middleware/auth.Middleware.js'
+import { authPrivateRoutes } from '../middleware/auth.Middleware.js';
+import {addToCartMiddleware} from '../middleware/addToCart.Middleware.js'
 
-const routerCart = express.Router();
+const router = express.Router();
 
-routerCart.post('/carrinho',  authPrivateRoutes,  addToCart);
-routerCart.get('/carrinho',   authPrivateRoutes,  getCart);
+router.post('/cart', authPrivateRoutes, addToCartMiddleware, addToCart);
+router.get('/cart', authPrivateRoutes, getCart);
 
 
-export default routerCart;
+export default router;

@@ -25,7 +25,7 @@ async function MONGO_SESSIONS({find, insert, remove}){
         return await db.collection('sessions').insertOne(insert)
     }
     if(remove){
-        return await db.collection('sessions').insertOne(remove)
+        return await db.collection('sessions').deleteOne(remove)
     }
 } 
 
@@ -37,7 +37,7 @@ async function MONGO_PRODUCTS({find, insert, remove}){
         return await db.collection('products').insertOne(insert)
     }
     if(remove){
-        return await db.collection('products').insertOne(remove)
+        return await db.collection('products').deleteOne(remove)
     }
 }
 
@@ -49,8 +49,15 @@ async function MONGO_CART({find, insert, remove}){
         return await db.collection('cart').insertOne(insert)
     }
     if(remove){
-        return await db.collection('cart').insertOne(remove)
+        return await db.collection('cart').deleteOne(remove)
     }
+}
+
+async function MONGO_CARTUPDATE(accountId, update){
+    await db.collection('cart').updateOne(
+        { _id: accountId },
+        { $set: update }
+        )
 }
 
 async function MONGO_CHECKOUT({find, insert, remove}){
@@ -61,7 +68,7 @@ async function MONGO_CHECKOUT({find, insert, remove}){
         return await db.collection('checkout').insertOne(insert)
     }
     if(remove){
-        return await db.collection('checkout').insertOne(remove)
+        return await db.collection('checkout').deleteOne(remove)
     }
 }
 
@@ -70,5 +77,6 @@ export {
     MONGO_SESSIONS,
     MONGO_PRODUCTS,
     MONGO_CART,
-    MONGO_CHECKOUT
+    MONGO_CHECKOUT,
+    MONGO_CARTUPDATE
 }
