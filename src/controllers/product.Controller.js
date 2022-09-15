@@ -14,7 +14,6 @@ async   function addProduct (req, res) {
 }
 
 async   function getProduct (req, res) {
-    /* {title, description, url_image, type, newValue} */
     try {
         const products = await MONGO_PRODUCTS({find:{}});
 

@@ -6,7 +6,7 @@ async function signIn(req, res){
     const {userId} = res.locals.user
     const secretKey = process.env.JWT_SECRET
     const token = jwt.sign({userId,} , secretKey)
-
+    
     try {
         await MONGO_SESSIONS({insert:{
             token,
