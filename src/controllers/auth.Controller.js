@@ -22,7 +22,6 @@ async function signUp(req, res){
     address, state, country} = res.locals.user
 
     const SALT = Number(process.env.SALT)
-    console.log(SALT)
     const hashPassword = bcrypt.hashSync(password, SALT)
         
     try {
