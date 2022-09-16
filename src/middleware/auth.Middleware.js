@@ -56,7 +56,7 @@ async function authSignIn(req, res, next) {
         const errors = isValid.error.details.map(detail => detail.message)
         return res.status(422).send(errors)
     }
-
+    
     try {
         const emailIsValid = await MONGO_USERS({ find: { email, } })
         const hashPassword = bcrypt.compareSync(password, emailIsValid.hashPassword)
