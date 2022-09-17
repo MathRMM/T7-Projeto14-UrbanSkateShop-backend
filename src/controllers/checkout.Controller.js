@@ -10,16 +10,12 @@ async function post_checkout(req,res){
         const userCart = await MONGO_CART({find:({userId: ObjectId(userId)}, {paid:false})})
         if(!userCart[0]) return res.sendStatus(404)
         let amountCart = 0
-        let _userCart = userCart.find(cart => cart.paid === false)
-        _userCart.products.map(item => amountCart += item.newValue)
-        _userCart.amount = amountCart
+        userCart[0].products.map(item => amountCart += item.newValue)
+        userCart[0].amount = amountCart
         if(Number(payment) >= amountCart){
-            console.log('pago')
             userCart[0].paid = true
         }
-        console.log(userCart[0]._id)
-        const up = await MONGO_CARTUPDATE(userCart[0]._id, userCart[0])
-        console.log(up)
+        await MONGO_CARTUPDATE(userCart[0]._id, userCart[0])
         return res.sendStatus(200)
     } catch (error) {
         console.error(error)
@@ -29,8 +25,6 @@ async function post_checkout(req,res){
 
 async function get_checkout(req,res){
     const{userId} = res.locals.user
-    const {payment} = req.body
-    if(!payment) return res.sendStatus(400);
 
     try {
         const userCart = await MONGO_CART({find:({userId: ObjectId(userId)}, {paid:true})})
@@ -45,4 +39,5 @@ async function get_checkout(req,res){
 
 export {
     post_checkout,
-    get_checkout}
+    get_checkout
+}

@@ -25,11 +25,8 @@ async function addToCart(req, res){
             }});
             return res.status(201).send('criado o primeiro item do carrinho');
         }
+
         userCart.map(async (cart)=>{
-            if(cart.paid === true){
-                return
-            }
-            if(cart.paid === false){
                 cart.products.push( {
                     productId: ObjectId(product._id),
                     title: product.title,
@@ -44,8 +41,7 @@ async function addToCart(req, res){
                     paid: cart.paid
                 })
                 console.log(cart._id)
-            }
-        })
+            })
         return res.sendStatus(201);
     } catch (error) {
         console.log(error);
@@ -60,10 +56,9 @@ async function getCart(req, res){
         const userCart = await MONGO_CART({find: ({userId: ObjectId(userId)}, {paid:false})})
         if(!userCart[0]) return res.sendStatus(404)
         let amountCart = 0
-        let _userCart = userCart.find(cart => cart.paid === false)
-        _userCart.products?.map(item => amountCart += item.newValue)
-        _userCart.amount = amountCart
-        return res.status(200).send(_userCart)
+        userCart[0].products?.map(item => amountCart += item.newValue)
+        userCart[0].amount = amountCart
+        return res.status(200).send(userCart[0])
     } catch (error) {
         console.error(error)
         return res.sendStatus(500)
