@@ -64,7 +64,7 @@ async function authSignIn(req, res, next) {
         if (!hashPassword) return res.status(401).send({ message: "email ou senha errada." })
         res.locals.user = { 
             userId: emailIsValid._id,
-            Name: emailIsValid.name
+            name: emailIsValid.name
         }
     } catch (error) {
         console.error(error)
