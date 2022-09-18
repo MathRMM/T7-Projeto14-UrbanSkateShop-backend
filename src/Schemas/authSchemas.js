@@ -18,8 +18,13 @@ const authSignUpSchema = joi.object({
     country:joi.string().required()
 })
 
+const paymentSchema = joi.object({
+    payment: joi.number()
+})
+
 
 export {
     authSignInSchema,
-    authSignUpSchema
+    authSignUpSchema,
+    paymentSchema
 }

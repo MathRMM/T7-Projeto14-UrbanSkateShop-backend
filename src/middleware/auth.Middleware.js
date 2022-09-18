@@ -59,10 +59,13 @@ async function authSignIn(req, res, next) {
     
     try {
         const emailIsValid = await MONGO_USERS({ find: { email, } })
+        if(!emailIsValid) return res.status(404).send({message:'E-mail não encontrado'})
         const hashPassword = bcrypt.compareSync(password, emailIsValid.hashPassword)
         if (!hashPassword) return res.status(401).send({ message: "email ou senha errada." })
-        console.log(emailIsValid)
-        res.locals.user = { userId: emailIsValid._id }
+        res.locals.user = { 
+            userId: emailIsValid._id,
+            Name: emailIsValid.name
+        }
     } catch (error) {
         console.error(error)
         return res.sendStatus(500)

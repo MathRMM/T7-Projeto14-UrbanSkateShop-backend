@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 async function signIn(req, res){
-    const {userId} = res.locals.user
+    const {userId, name} = res.locals.user
     const secretKey = process.env.JWT_SECRET
     const token = jwt.sign({userId,} , secretKey)
     
@@ -11,7 +11,10 @@ async function signIn(req, res){
         await MONGO_SESSIONS({insert:{
             token,
         }})
-        return res.status(200).send(token)
+        return res.status(200).send({
+            token,
+            name,
+        })
     } catch (error) {
         return res.sendStatus(500)
     } 
