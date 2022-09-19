@@ -54,7 +54,7 @@ async function getCart(req, res){
     try {
        
         const userCart = await MONGO_CART({find: ({userId: ObjectId(userId)}, {paid:false})})
-        if(!userCart[0]) return res.sendStatus(404)
+        if(!userCart[0]) return res.status(404).send('Usuario não tem produtos no carrinho')
         let amountCart = 0
         userCart[0].products?.map(item => amountCart += item.newValue)
         userCart[0].amount = amountCart
