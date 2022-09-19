@@ -3,8 +3,9 @@ import { ObjectId } from 'mongodb';
 
 async function post_checkout(req,res){
     const{userId} = res.locals.user
-    const {payment} = req.body
+    const {payment} = res.locals.payment
     if(!payment) return res.sendStatus(400);
+    console.log(payment)
 
     try {
         const userCart = await MONGO_CART({find:({userId: ObjectId(userId)}, {paid:false})})

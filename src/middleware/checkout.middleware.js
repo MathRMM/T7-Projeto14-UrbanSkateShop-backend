@@ -9,6 +9,8 @@ async function checkoutMiddleware(req, res, next){
         const errors = isValid.error.details.map(detail => detail.message)
         return res.status(422).send(errors)
     }
-
+    res.locals.payment = {payment,}
     next()
 }
+
+export default checkoutMiddleware
