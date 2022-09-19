@@ -31,7 +31,7 @@ async function get_checkout(req,res){
     const{userId} = res.locals.user
 
     try {
-        const userCart = await MONGO_CART({find:({userId: ObjectId(userId)}, {paid:true})})
+        const userCart = await MONGO_CART({find:({$and:[{userId: ObjectId(userId)}, {paid:true}]})})
         if(!userCart[0]) return res.sendStatus(404)
         
         return res.status(200).send(userCart)
