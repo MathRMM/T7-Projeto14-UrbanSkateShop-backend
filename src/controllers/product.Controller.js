@@ -6,7 +6,6 @@ async   function addProduct (req, res) {
     const newValue = Number(value)*100
     try {
         const product = await MONGO_PRODUCTS({insert:{title, description, url_image, type, newValue }});
-        console.log(product);
         return res.sendStatus(201);
     } catch (error) {
         console.log(error);
@@ -28,12 +27,8 @@ async   function getProduct (req, res) {
 async   function getProductId (req, res) {
     const {productId} = req.params
 
-    console.log(productId)
-
     try {
         const products = await MONGO_PRODUCTS({find:{_id:ObjectId(productId)}});
-
-        console.log(products);
         return res.status(200).send(products[0]);
     } catch (error) {
         console.log(error);
