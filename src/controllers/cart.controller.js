@@ -7,7 +7,7 @@ async function addToCart(req, res){
 
     try {
 
-        const userCart = await MONGO_CART({find:({userId: ObjectId(userId)}, {paid:false})})
+        const userCart = await MONGO_CART({find:({$and:[{userId: ObjectId(userId)}, {paid:false}]})})
         if(!userCart[0]) {
             await MONGO_CART({insert:{
                 products: [
@@ -53,7 +53,7 @@ async function getCart(req, res){
     const{userId} = res.locals.user
     try {
        
-        const userCart = await MONGO_CART({find: ({userId: ObjectId(userId)}, {paid:false})})
+        const userCart = await MONGO_CART({find: ({$and:[{userId: ObjectId(userId)}, {paid:false}]})})
         if(!userCart[0]) return res.status(404).send('Usuario não tem produtos no carrinho')
         let amountCart = 0
         userCart[0].products?.map(item => amountCart += item.newValue)

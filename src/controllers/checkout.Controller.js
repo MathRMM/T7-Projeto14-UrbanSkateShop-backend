@@ -10,7 +10,7 @@ async function post_checkout(req,res){
     console.log(payment)
 
     try {
-        const userCart = await MONGO_CART({find:({userId: ObjectId(userId)}, {paid:false})})
+        const userCart = await MONGO_CART({find:({$and:[{userId: ObjectId(userId)}, {paid:false}]})})
         if(!userCart[0]) return res.sendStatus(404)
         let amountCart = 0
         userCart[0].products.map(item => amountCart += item.newValue)
