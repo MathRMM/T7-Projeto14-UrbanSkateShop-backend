@@ -35,8 +35,23 @@ async   function getProductId (req, res) {
         return res.sendStatus(500);
     }
 }
+
+async function getSearch(req, res){
+    const {text} = req.params
+    console.log(text)
+
+    try {
+        const products = await MONGO_PRODUCTS({find:{$text:{$search: text, $caseSensitive: false}}})
+        return res.status(200).send(products)
+    } catch (error) {
+        console.error(error)
+        return res.sendStatus(500)
+    }
+}
+
 export {
     addProduct,
     getProduct,
-    getProductId
+    getProductId,
+    getSearch
 }
