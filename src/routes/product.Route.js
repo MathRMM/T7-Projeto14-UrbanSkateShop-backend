@@ -1,9 +1,11 @@
 import express from 'express'
-import { addProduct, getProduct } from '../controllers/product.Controller.js'
+import { addProduct, getProduct, getProductId, getSearch } from '../controllers/product.Controller.js'
 
-const routerproduct = express.Router()
+const router = express.Router()
 
-routerproduct.post('/adicionarProdutos', addProduct);
-routerproduct.get('/produtos', getProduct);
+router.post('/products', addProduct);
+router.get('/products', getProduct);
+router.get('/products/:productId', getProductId);
+router.get('/products/search/:text', getSearch)
 
-export default routerproduct
+export default router
