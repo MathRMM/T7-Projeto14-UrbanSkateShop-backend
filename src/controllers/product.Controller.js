@@ -8,7 +8,7 @@ async   function addProduct (req, res) {
         const product = await MONGO_PRODUCTS({insert:{title, description, url_image, type, newValue }});
         return res.sendStatus(201);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.sendStatus(500);
     }
 }
@@ -19,7 +19,7 @@ async   function getProduct (req, res) {
         const products = await MONGO_PRODUCTS({find:{}});
         return res.status(200).send(products);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.sendStatus(500);
     }
 }
@@ -31,14 +31,13 @@ async   function getProductId (req, res) {
         const products = await MONGO_PRODUCTS({find:{_id:ObjectId(productId)}});
         return res.status(200).send(products[0]);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.sendStatus(500);
     }
 }
 
 async function getSearch(req, res){
     const {text} = req.params
-    console.log(text)
 
     try {
         const products = await MONGO_PRODUCTS({find:{$text:{$search: text, $caseSensitive: false}}})
